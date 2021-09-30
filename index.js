@@ -42,11 +42,12 @@ axios(url)
 
         addHeaderRow(headers, stream);
 
-        $(`.${htmlClassQuery}`)
-            .each(() => {
+        // Add logic to scrape data from the HTML
+
+        // $(`.${htmlClassQuery}`)
+            // .each(() => {
                 // stream.write($(this).text().trim() + "\t");
-                // Add relevant code here
-            })
+            // })
 
         stream.end();
     })
