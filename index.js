@@ -7,10 +7,13 @@ const PORT = 5555;
 
 const app = express();
 
+// ---------------------------------------------------------------------------------------------------------
 const filename = ''; // filename to write to (without extension)
+const fileExt = '.csv'; // file extension
 const url = ""; // URL to scrape
-const htmlClassQuery = ""; // Class of the HTML element to scrape
+const htmlQuery = ""; // HTML query to scrape
 const headers = [];  // Array of header titles in the csv file. Example: ["name", "location", "phone"...]
+// ---------------------------------------------------------------------------------------------------------
 
 const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -38,19 +41,21 @@ axios(url)
     .then(resp => {
         const html = resp.data;
         const $ = cheerio.load(html);
-        let stream = fs.createWriteStream(`${filename}.csv`);
+        let stream = fs.createWriteStream(`${filename}.${fileExt}`);
 
         addHeaderRow(headers, stream);
 
         // Add logic to scrape data from the HTML and write to the file stream.
+        // ---------------------------------------------------------------------
         // For example:
-        // $(`.${htmlClassQuery}`)
+        // $('${htmlClassQuery}')
         //     .each((_i, elem) => {
         //         const name = $(elem).find('.name').text();
         //         const location = $(elem).find('.location').text();
         //         const phone = $(elem).find('.phone').text();
         //         stream.write(`"${name}","${location}","${phone}"\n`);
         //     })
+        // ---------------------------------------------------------------------
 
         stream.end();
     })
