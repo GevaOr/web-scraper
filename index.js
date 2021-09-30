@@ -48,7 +48,7 @@ axios(url)
         // Add logic to scrape data from the HTML and write to the file stream.
         // ---------------------------------------------------------------------
         // For example:
-        // $('${htmlClassQuery}')
+        // $('${htmlQuery}')
         //     .each((_i, elem) => {
         //         const name = $(elem).find('.name').text();
         //         const location = $(elem).find('.location').text();
