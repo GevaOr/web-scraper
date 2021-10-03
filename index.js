@@ -8,9 +8,9 @@ const PORT = 5555;
 const app = express();
 
 // ---------------------------------------------------------------------------------------------------------
-const filename = ''; // filename to write to (without extension)
-const fileExt = 'csv'; // file extension, without the period
-const url = ""; // URL to scrape
+const FILENAME = ''; // filename to write to (without extension)
+const FILE_EXT = 'csv'; // file extension, without the period
+const URL = ""; // URL to scrape
 const htmlQuery = ""; // HTML query to scrape
 const headers = [];  // Array of header titles in the csv file. Example: ["name", "location", "phone"...]
 // ---------------------------------------------------------------------------------------------------------
@@ -37,28 +37,36 @@ const addHeaderRow = (headers, fileStream) => {
     fileStream.write(headerRow);
 };
 
-axios(url)
-    .then(resp => {
-        const html = resp.data;
-        const $ = cheerio.load(html);
-        let stream = fs.createWriteStream(`${filename}.${fileExt}`);
+const createFileStream = (filename, FileExtension) => {
+    return fs.createWriteStream(`${filename}.${FileExtension}`);
+}
 
-        addHeaderRow(headers, stream);
+const scrape = async (url, query) => {
+    console.log(`Scraping ${url}`);
+    const stream = createFileStream(FILENAME, FILE_EXT);
+    addHeaderRow(headers, stream);
 
-        // Add logic to scrape data from the HTML and write to the file stream.
-        // ---------------------------------------------------------------------
-        // For example:
-        // $('${htmlQuery}')
-        //     .each((_i, elem) => {
-        //         const name = $(elem).find('.name').text();
-        //         const location = $(elem).find('.location').text();
-        //         const phone = $(elem).find('.phone').text();
-        //         stream.write(`"${name}","${location}","${phone}"\n`);
-        //     })
-        // ---------------------------------------------------------------------
+    console.log(`${FILENAME}.${FILE_EXT} stream created`);
+    await axios(url)
+        .then(resp => {
+            const html = resp.data;
+            const $ = cheerio.load(html);
 
-        stream.end();
-    })
-    .catch(err => { console.error("An error occured while trying to scrape\n", err) });
+            // Add logic to scrape data from the HTML and write to the file stream.
+            // ---------------------------------------------------------------------
+            // For example:
+            // $('${query}')
+            //     .each((_i, elem) => {
+            //         const name = $(elem).find('.name').text();
+            //         const location = $(elem).find('.location').text();
+            //         const phone = $(elem).find('.phone').text();
+            //         stream.write(`"${name}","${location}","${phone}"\n`);
+            //     })
+            // ---------------------------------------------------------------------
+
+            stream.end();
+        })
+        .catch(err => { console.error("An error occured while trying to scrape\n", err) });
+}
 
 app.listen(PORT, () => console.log(`server running on port: ${PORT}`));
