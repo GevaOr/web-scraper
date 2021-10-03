@@ -9,7 +9,7 @@ const app = express();
 
 // ---------------------------------------------------------------------------------------------------------
 const filename = ''; // filename to write to (without extension)
-const fileExt = '.csv'; // file extension
+const fileExt = 'csv'; // file extension, without the period
 const url = ""; // URL to scrape
 const htmlQuery = ""; // HTML query to scrape
 const headers = [];  // Array of header titles in the csv file. Example: ["name", "location", "phone"...]
